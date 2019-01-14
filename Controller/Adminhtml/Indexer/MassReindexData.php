@@ -8,27 +8,36 @@
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
  * http://bsscommerce.com/Bss-Commerce-License.txt
- *
- * =================================================================
- *                 MAGENTO EDITION USAGE NOTICE
- * =================================================================
- * This package designed for Magento COMMUNITY edition
- * BSS Commerce does not guarantee correct work of this extension
- * on any other Magento edition except Magento COMMUNITY edition.
- * BSS Commerce does not provide extension support in case of
- * incorrect edition usage.
- * =================================================================
- *
  * @category   BSS
  * @package    Bss_Reindex
  * @author     Extension Team
- * @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
+ * @copyright  Copyright (c) 2015-2018 BSS Commerce Co. ( http://bsscommerce.com )
  * @license    http://bsscommerce.com/Bss-Commerce-License.txt
  */
 namespace Bss\Reindex\Controller\Adminhtml\Indexer;
 
+use Magento\Backend\App\Action;
+
 class MassReindexData extends \Magento\Backend\App\Action
 {
+    /**
+     * @var \Magento\Framework\Indexer\IndexerRegistry
+     */
+    protected $registry;
+
+    /**
+     * MassReindexData constructor.
+     * @param Action\Context $context
+     * @param \Magento\Framework\Indexer\IndexerRegistry $registry
+     */
+    public function __construct(
+        Action\Context $context,
+        \Magento\Framework\Indexer\IndexerRegistry $registry
+    ) {
+        $this->registry = $registry;
+        parent::__construct($context);
+    }
+
     protected function _isAllowed()
     {
         if ($this->_request->getActionName() == 'massReindexData') {
@@ -46,7 +55,7 @@ class MassReindexData extends \Magento\Backend\App\Action
         	$startTime = microtime(true);
             foreach ($indexerIds as $indexerId) {
             	try {
-                    $indexer = $this->_objectManager->get('Magento\Framework\Indexer\IndexerRegistry')->get($indexerId);
+                    $indexer = $this->registry->get($indexerId);
                     $indexer->reindexAll();
                     $resultTime = microtime(true) - $startTime;
                     $this->messageManager->addSuccess(
