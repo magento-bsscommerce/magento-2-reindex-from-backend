@@ -65,15 +65,22 @@ class CoreModuleRequired implements \Magento\Framework\Notification\MessageInter
     /**
      * Retrieve system message text
      *
-     * @return \Magento\Framework\Phrase
+     * @return string
      */
     public function getText()
     {
         $moduleName = $this->helper->getModuleName();
-        return __(
+        $text = __(
             '<b>Your module "%1" can not work without BSS Commerce\'s 
                 Core Module included in the package</b>',
             $moduleName);
+        $script =
+            '<script>
+                setTimeout(function() {
+                    jQuery("button.message-system-action-dropdown").trigger("click");
+                }, 100);
+            </script>';
+        return $text . $script;
     }
 
     /**
