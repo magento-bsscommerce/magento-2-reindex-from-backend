@@ -41,8 +41,7 @@ class MassReindexData extends \Magento\Backend\App\Action
         Action\Context $context,
         \Magento\Framework\Indexer\IndexerRegistry $registry,
         \Bss\Reindex\Helper\Data $helper
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->registry = $registry;
         $this->helper = $helper;
@@ -68,7 +67,7 @@ class MassReindexData extends \Magento\Backend\App\Action
                 try {
                     $indexer = $this->registry->get($indexerId);
                     $indexer->reindexAll();
-                    $resultTime = microtime(true) - $startTime;
+                    $resultTime = (int)(microtime(true) - $startTime);
                     $this->messageManager->addSuccess(
                         '<div class="bss-reindex-info">' . $indexer->getTitle() . ' index has been rebuilt successfully in ' . gmdate('H:i:s', $resultTime) . '</div>'
                     );
