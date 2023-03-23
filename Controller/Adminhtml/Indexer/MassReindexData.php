@@ -18,6 +18,7 @@
 namespace Bss\Reindex\Controller\Adminhtml\Indexer;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\App\ResponseInterface;
 
 class MassReindexData extends \Magento\Backend\App\Action
 {
@@ -33,6 +34,7 @@ class MassReindexData extends \Magento\Backend\App\Action
 
     /**
      * MassReindexData constructor.
+     *
      * @param Action\Context $context
      * @param \Magento\Framework\Indexer\IndexerRegistry $registry
      * @param \Bss\Reindex\Helper\Data $helper
@@ -41,13 +43,17 @@ class MassReindexData extends \Magento\Backend\App\Action
         Action\Context $context,
         \Magento\Framework\Indexer\IndexerRegistry $registry,
         \Bss\Reindex\Helper\Data $helper
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->registry = $registry;
         $this->helper = $helper;
     }
 
+    /**
+     * Determine if action is allowed for module
+     *
+     * @return bool
+     */
     protected function _isAllowed()
     {
         if ($this->_request->getActionName() == 'massReindexData') {
@@ -57,6 +63,11 @@ class MassReindexData extends \Magento\Backend\App\Action
         return false;
     }
 
+    /**
+     * Mass action reindex
+     *
+     * @return ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     */
     public function execute()
     {
         $indexerIds = $this->getRequest()->getParam('indexer_ids');
