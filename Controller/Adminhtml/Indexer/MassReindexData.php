@@ -79,7 +79,7 @@ class MassReindexData extends \Magento\Backend\App\Action
                 try {
                     $indexer = $this->registry->get($indexerId);
                     $indexer->reindexAll();
-                    $resultTime = microtime(true) - $startTime;
+                    $resultTime = (int)(microtime(true) - $startTime);
                     $this->messageManager->addSuccess(
                         '<div class="bss-reindex-info">' . $indexer->getTitle() . ' index has been rebuilt successfully in ' . gmdate('H:i:s', (int)$resultTime) . '</div>'
                     );
